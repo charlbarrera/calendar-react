@@ -8,10 +8,9 @@ import moment from 'moment';
 export const CalendarContainer = ({ children }) => {
     const [dateObject, setDateObject] = React.useState(moment());
     const [allMonths, setAllMoths] = React.useState(moment.months());
-    const [showMonthTable, setShowMonthTable] = React.useState(false);
-    const [showYearTable, setShowYearTable] = React.useState(false);
-    const [showDatesTable, setShowDatesTable] = React.useState(false);
     const [selectedDay, setSelectedDay] = React.useState(null);
+        
+    const [typeContent, setTypeContent] = React.useState('daysMonth')
 
 
     // days of the week
@@ -40,12 +39,7 @@ const month = () => {
 
 const onPrev = () => {
   let newDateObject = Object.assign({}, dateObject);
-  let curr = "";
-  if (showYearTable == true) {
-    curr = "year";
-  } else {
-    curr = "month";
-  }
+  let curr = typeContent === 'daysMonth' ? 'month' : typeContent;
   newDateObject = moment(newDateObject).subtract(1, curr);
   setDateObject(newDateObject);
 
@@ -53,12 +47,7 @@ const onPrev = () => {
 
 const onNext = () => {
   let newDateObject = Object.assign({}, dateObject);
-  let curr = "";
-  if (showYearTable == true) {
-    curr = "year";
-  } else {
-    curr = "month";
-  }
+  let curr = typeContent === 'daysMonth' ? 'month' : typeContent;
   newDateObject = moment(newDateObject).add(1, curr)
     setDateObject(newDateObject);
 
@@ -73,13 +62,15 @@ const setMonth = ({monthNo})  => {// get month number
     newDateObject = moment(newDateObject).set("month", monthNo); // change month value
 
     setDateObject(newDateObject);
-    setShowMonthTable((show) => !show);
-    setShowDatesTable((show) => !show);
+    setTypeContent((prevType) => prevType !== 'month' ? 'month' : 'daysMonth')
 };
 
 const setshowYearTable = () => {
-    setShowYearTable((prev) => !prev)
-    setShowMonthTable((prev) => !prev);
+    setTypeContent((prevType) => prevType !== 'year' ? 'year' : 'months')
+}
+
+const setShowMonthTable = () => {
+    setTypeContent((prevType) => prevType !== 'month' ? 'month' : 'daysMonth')
 }
 
 const setYear = year => {
@@ -87,8 +78,7 @@ const setYear = year => {
     let newdateObject = Object.assign({}, dateObject);
     newdateObject = moment(newdateObject).set("year", year);
     setDateObject(newdateObject);
-    setShowMonthTable((show) => !show);
-    setShowYearTable((show) => !show);
+    setTypeContent('month');
   };
 
 
@@ -105,6 +95,7 @@ const onDayClick = (e, day) => {
         setYear,
         firstDayOfMonth,
         setshowYearTable,
+        setShowMonthTable,
         setMonth,
         year,
         onNext,
@@ -115,9 +106,8 @@ const onDayClick = (e, day) => {
     },
     state: {
         allMonths,
-        showMonthTable,
-        showDatesTable,
-        selectedDay
+        selectedDay,
+        typeContent
     },
     columns,
     weekdayshort,
