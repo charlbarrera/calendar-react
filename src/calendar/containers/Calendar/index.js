@@ -1,16 +1,17 @@
-import React from 'react';
+import { shallowEqual, useSelector, useDispatch } from 'react-redux';
 import moment from 'moment';
-
-
+import { setDateObject, setTypeContent, selectDay } from '../../../redux/actions/calendar';
 
 
 
 export const CalendarContainer = ({ children }) => {
-    const [dateObject, setDateObject] = React.useState(moment());
-    const [allMonths, setAllMoths] = React.useState(moment.months());
-    const [selectedDay, setSelectedDay] = React.useState(null);
-        
-    const [typeContent, setTypeContent] = React.useState('daysMonth')
+const dateObject = useSelector(({ calendar }) => calendar.dateObject, shallowEqual);
+const typeContent = useSelector(({ calendar }) => calendar.typeContent, shallowEqual);
+const selectedDay = useSelector(({ calendar }) => calendar.selectedDay, shallowEqual);
+const allMonths = useSelector(({ calendar }) => calendar.allMonths, shallowEqual);
+
+
+const dispatch = useDispatch();
 
 
     // days of the week
@@ -41,15 +42,15 @@ const onPrev = () => {
   let newDateObject = Object.assign({}, dateObject);
   let curr = typeContent === 'daysMonth' ? 'month' : typeContent;
   newDateObject = moment(newDateObject).subtract(1, curr);
-  setDateObject(newDateObject);
 
+  dispatch(setDateObject({dateObject: newDateObject}));
 }
 
 const onNext = () => {
   let newDateObject = Object.assign({}, dateObject);
   let curr = typeContent === 'daysMonth' ? 'month' : typeContent;
-  newDateObject = moment(newDateObject).add(1, curr)
-    setDateObject(newDateObject);
+  newDateObject = moment(newDateObject).add(1, curr);
+  dispatch(setDateObject({dateObject: newDateObject}));
 
 }
 
@@ -61,29 +62,29 @@ const setMonth = ({monthNo})  => {// get month number
     let newDateObject = Object.assign({}, dateObject);
     newDateObject = moment(newDateObject).set("month", monthNo); // change month value
 
-    setDateObject(newDateObject);
-    setTypeContent((prevType) => prevType !== 'month' ? 'month' : 'daysMonth')
+    dispatch(setDateObject({dateObject: newDateObject}));
+    dispatch(setTypeContent(typeContent !== 'month' ? 'month' : 'daysMonth'));
 };
 
 const setshowYearTable = () => {
-    setTypeContent((prevType) => prevType !== 'year' ? 'year' : 'months')
+    dispatch(setTypeContent(typeContent !== 'year' ? 'year' : 'months'));
 }
 
 const setShowMonthTable = () => {
-    setTypeContent((prevType) => prevType !== 'month' ? 'month' : 'daysMonth')
+   dispatch(setTypeContent(typeContent !== 'month' ? 'month' : 'daysMonth'));
 }
 
 const setYear = year => {
     // alert(year)
-    let newdateObject = Object.assign({}, dateObject);
-    newdateObject = moment(newdateObject).set("year", year);
-    setDateObject(newdateObject);
-    setTypeContent('month');
+    let newDateObject = Object.assign({}, dateObject);
+    newDateObject = moment(newDateObject).set("year", year);
+    dispatch(setDateObject({dateObject: newDateObject}));
+    dispatch(setTypeContent('month'));
   };
 
 
 const onDayClick = (e, day) => {
-  setSelectedDay(day);
+  dispatch(selectDay(day));
 }
 
 

@@ -1,0 +1,6 @@
+
+// calendar
+export const SET_DATE_OBJECT = 'CALENDAR/SET_DATE_OBJECT';
+export const SELECT_DAY = 'CALENDAR/SELECT_DAY';
+export const SET_TYPE_CONTENT = 'CALENDAR/TYPE_CONTENT';
+export const SET_ALL_MONTHS = 'CALENDAR/ALL_MONTHS';
