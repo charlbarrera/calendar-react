@@ -1,4 +1,5 @@
 import React from 'react';
+import { Grid } from '../contentCalendar/styles';
 
 export const MonthsComponent = (props) => {
 
@@ -38,7 +39,7 @@ export const MonthsComponent = (props) => {
     rows.push(cells); 
     
     let monthlist = rows.map((d, i) => {
-        return <tr>{d}</tr>;
+        return <Grid key={d} columns={3} >{d}</Grid>;
     });
     
 
@@ -50,7 +51,7 @@ export const MonthsComponent = (props) => {
               <th colSpan="4">Select a Month</th>
             </tr>
           </thead>
-          <tbody>{monthlist}</tbody>
+          <div >{monthlist}</div>
         </table>
       );
 }

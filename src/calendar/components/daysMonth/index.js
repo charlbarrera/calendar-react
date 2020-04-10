@@ -1,5 +1,8 @@
 import React from 'react';
 import { DayStyles, Cell } from './styles.js'
+import { Grid } from '../contentCalendar/styles.js';
+
+
   export const DatesMonth = ({firstDayOfMonth, daysInMonth, getCurrentDay, onDayClick}) => {
     let blanks = [];
     for (let i = 0; i < firstDayOfMonth(); i++) {
@@ -38,6 +41,6 @@ import { DayStyles, Cell } from './styles.js'
     });
   
     return rows.map((d, i) => {
-      return <Cell>{d}</Cell>;
+      return <Grid columns={7} >{d}</Grid>;
     });
 }
