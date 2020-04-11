@@ -5,6 +5,7 @@ import { setNewReminder } from "../../redux/actions/reminders";
 
 export const ReminderContainer = ({ children }) => {
     const newReminder = useSelector(({ calendar }) => calendar.newReminder, shallowEqual);
+    const selectedDay = useSelector(({ calendar }) => calendar.selectedDay, shallowEqual);
     const reminders = useSelector(({ reminders }) => reminders.remindersData, shallowEqual);
     const dispatch = useDispatch();
 
@@ -19,7 +20,7 @@ export const ReminderContainer = ({ children }) => {
         const newReminder = {
             title: title.value,
             date: newDate,
-            hour:  `${hour.value}:${minutes.value}:00`
+            hour:  `${hour.value}:${minutes.value}`
         }
 
         dispatch(setNewReminder(newReminder));
@@ -29,6 +30,7 @@ export const ReminderContainer = ({ children }) => {
     return children({
         state: {
             newReminder,
+            selectedDay
         },
         events: {
             onClose,

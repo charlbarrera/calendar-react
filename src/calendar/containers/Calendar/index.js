@@ -34,18 +34,26 @@ const daysInMonth = () => {
 };
 
 const getRemindersDate = (day) => {
-  const month = dateObject.month();
+  const month = dateObject.month() + 1;
   const year = dateObject.year();
   const momentA = moment(`${year}-${month}-${day}`).format("YYYY-MM-DD");
-  console.log('-------momenta', momentA);
-  return reminders.filter((reminder) => {
+  const remindersDay = reminders.filter((reminder) => {
     const { date } = reminder;
-    console.log('momentb', date);
     if (momentA === date) {
-      console.log('****momenta', momentA);
       return reminder;
     }
   })
+
+  return sortByHour(remindersDay);
+}
+
+const sortByHour = (remindersDay) => {
+  return remindersDay.sort((reminderA, reminderB) => {
+    if (reminderA.hour < reminderB.hour) return -1;
+    if (reminderA.hour > reminderB.hour) return 1;
+    return 0;
+  })
+
 }
 
 const getCurrentDay = () => {  
@@ -105,7 +113,7 @@ const setYear = year => {
 
 
 const onDayClick = (e, day) => {
-  dispatch(selectDay(day));
+  dispatch(selectDay(`${year()}-${month()}-${day}`));
   dispatch(showReminder(true));
 }
 

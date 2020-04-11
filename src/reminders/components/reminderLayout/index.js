@@ -4,8 +4,21 @@ import { ModalComponent } from '../modal';
 import { Button } from '@material-ui/core';
 
 export const ReminderLayout = ({ state, events }) => {
-    const { newReminder } = state;
+    const { newReminder, selectedDay } = state;
     const { onClose, onSubmit } = events;
+    const [date, setDate] = React.useState(selectedDay);
+    const [year, setYear] = React.useState(0);
+    const [month, setMonth] = React.useState(1);
+    const [day, setDay] = React.useState(1);
+    const [hour, setHour] = React.useState(5);
+    const [minutes, setMinutes] = React.useState(30);
+    React.useEffect(() => {
+        const selectedDateParsed = selectedDay.split('-');
+        setYear(selectedDateParsed[0]);
+        setMonth(selectedDateParsed[1]);
+        setDay(selectedDateParsed[2]);
+    }, [date, selectedDay]);
+
 
     return <ModalComponent open={newReminder} onClose={onClose} >
                 <form onSubmit={onSubmit} >
@@ -15,18 +28,18 @@ export const ReminderLayout = ({ state, events }) => {
                     </div>
                     <div>
                         <div>
-                            <Input name="dayDate" color="primary" value={5} />
-                            <Input name="monthDate" color="primary" value={3} />
-                            <Input name="yearDate" color="primary" value={2020} />
+                            <Input name="dayDate" color="primary" value={year} onChange={(e) => setYear(e.target.value)} />
+                            <Input name="monthDate" color="primary" value={month} onChange={(e) => setMonth(e.target.value)} />
+                            <Input name="yearDate" color="primary" value={day} onChange={(e) => setDay(e.target.value)} />
                         </div>
                         <div>
-                            <Input name="hour" color="primary" value={5} />:<Input name="minutes" value={30} />
+                            <Input name="hour" color="primary" value={hour} onChange={(e) => setHour(e.target.value)} />:<Input name="minutes" value={minutes} onChange={(e) => setMinutes(e.target.value)} />
                         </div>
                     </div>
                     <div>
                         <Input name="city" color="primary" placeholder="city" />
                     </div>
-                    <Button onClick={onClose}>cancel</Button>
+                    <Button type="button" onClick={onClose}>cancel</Button>
                     <Button type="onsubmit" style={{backgroundColor: "#00838f"}} variant="contained" color="primary">NEW REMINDER</Button>
                 </form>
             </ModalComponent>

@@ -5,7 +5,7 @@ import { SET_DATE_OBJECT, SELECT_DAY, SET_TYPE_CONTENT, SET_ALL_MONTHS, NEW_REMI
 const defaultState = {
     dateObject: moment(),
     allMonths: moment.months(),
-    selectedDay: null,
+    selectedDay: '',
     typeContent: 'daysMonth',
     newReminder: false,
 }
