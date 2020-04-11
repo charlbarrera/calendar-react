@@ -3,7 +3,13 @@ import { DayStyles, Cell } from './styles.js'
 import { Grid } from '../contentCalendar/styles.js';
 
 
-  export const DatesMonth = ({firstDayOfMonth, daysInMonth, getCurrentDay, onDayClick}) => {
+  const ReminderList = ({ remindersDate }) =>{
+    return remindersDate.map((reminder) => {
+      return <div>{reminder.title}</div>
+    })
+  }
+
+  export const DatesMonth = ({firstDayOfMonth, daysInMonth, getCurrentDay, onDayClick, getRemindersDate}) => {
     let blanks = [];
     for (let i = 0; i < firstDayOfMonth(); i++) {
       blanks.push(
@@ -12,13 +18,13 @@ import { Grid } from '../contentCalendar/styles.js';
     }
     
     let daysInMonthArr = [];
-    for (let d = 1; d <= daysInMonth(); d++) {
-        let currentDay = d == getCurrentDay() ? 'today' : '';
+    for (let day = 1; day <= daysInMonth(); day++) {
+        let currentDay = day == getCurrentDay() ? 'today' : '';
+        let remindersDate = getRemindersDate(day);
         daysInMonthArr.push(
-        <DayStyles key={d} currentDay={currentDay}>
-          <div onClick={(e) => onDayClick(e, d)}>
-            {d}
-          </div>
+        <DayStyles key={day} currentDay={currentDay} onClick={(e) => onDayClick(e, day)}>
+            {day}
+            <ReminderList remindersDate={remindersDate} />
         </DayStyles>
       );
     }

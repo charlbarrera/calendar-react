@@ -21,22 +21,6 @@ export const ContentCalendar = ({ state, events, columns, weekdayshort }) => {
                     year={events.year()}
                 />
             </Grid>
-        case 'daysMonth':
-            return <>
-                     <Grid columns={7}>
-                        {
-                            weekdayshort.map((day) => (
-                                <div>{day}</div>
-                            ))
-                        }
-                    </Grid>
-                    <DatesMonth
-                        firstDayOfMonth={events.firstDayOfMonth}
-                        daysInMonth={events.daysInMonth}
-                        getCurrentDay={events.getCurrentDay}
-                        onDayClick={events.onDayClick}
-                    />
-            </>
         default:
             return <>
                     <Grid columns={7}>
@@ -51,6 +35,7 @@ export const ContentCalendar = ({ state, events, columns, weekdayshort }) => {
                         daysInMonth={events.daysInMonth}
                         getCurrentDay={events.getCurrentDay}
                         onDayClick={events.onDayClick}
+                        getRemindersDate={events.getRemindersDate}
                     />
             </>
     }

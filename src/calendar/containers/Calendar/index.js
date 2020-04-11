@@ -1,6 +1,6 @@
 import { shallowEqual, useSelector, useDispatch } from 'react-redux';
 import moment from 'moment';
-import { setDateObject, setTypeContent, selectDay } from '../../../redux/actions/calendar';
+import { setDateObject, setTypeContent, selectDay, showReminder } from '../../../redux/actions/calendar';
 
 
 
@@ -11,10 +11,13 @@ const selectedDay = useSelector(({ calendar }) => calendar.selectedDay, shallowE
 const allMonths = useSelector(({ calendar }) => calendar.allMonths, shallowEqual);
 
 
+const reminders = useSelector(({ reminders }) => reminders.remindersData, shallowEqual);
+
+
 const dispatch = useDispatch();
 
 
-    // days of the week
+// days of the week
 const weekdayshort = moment.weekdaysShort();
 const columns = weekdayshort.length;
 
@@ -30,7 +33,25 @@ const daysInMonth = () => {
     return moment(dateObject).daysInMonth();
 };
 
+const getRemindersDate = (day) => {
+  const month = dateObject.month();
+  const year = dateObject.year();
+  const momentA = moment(`${year}-${month}-${day}`).format("YYYY-MM-DD");
+  console.log('-------momenta', momentA);
+  return reminders.filter((reminder) => {
+    const { date } = reminder;
+    console.log('momentb', date);
+    if (momentA === date) {
+      console.log('****momenta', momentA);
+      return reminder;
+    }
+  })
+}
+
 const getCurrentDay = () => {  
+    const day = dateObject.day();
+    const month = dateObject.month();
+    const year = dateObject.year();
     return dateObject.format("D");
 };
 
@@ -85,6 +106,7 @@ const setYear = year => {
 
 const onDayClick = (e, day) => {
   dispatch(selectDay(day));
+  dispatch(showReminder(true));
 }
 
 
@@ -104,11 +126,13 @@ const onDayClick = (e, day) => {
         month,
         getCurrentDay,
         daysInMonth,
+        getRemindersDate
     },
     state: {
         allMonths,
         selectedDay,
-        typeContent
+        typeContent,
+        reminders
     },
     columns,
     weekdayshort,

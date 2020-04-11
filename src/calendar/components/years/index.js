@@ -11,10 +11,10 @@ export const YearsComponent = (props) => {
       .format("Y");
 
      function getDates(startDate, stopDate) {
-        var dateArray = [];
-        var currentDate = moment(startDate);
-        var stopDate = moment(stopDate);
-        while (currentDate <= stopDate) {
+        let dateArray = [];
+        let currentDate = moment(startDate);
+        let nextDates = moment(stopDate);
+        while (currentDate <= nextDates) {
           dateArray.push(moment(currentDate).format("YYYY"));
           currentDate = moment(currentDate).add(1, "year");
         }
@@ -57,7 +57,7 @@ export const YearsComponent = (props) => {
         <table className="calendar-month">
           <thead>
             <tr>
-              <th colSpan="4">Select a Yeah</th>
+              <th colSpan="4">Select a Year</th>
             </tr>
           </thead>
           <div>{yearlist}</div>
