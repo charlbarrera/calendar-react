@@ -16,7 +16,7 @@ export const ReminderContainer = ({ children }) => {
 
     const onSubmitReminder = (e, reminder) => {
         e.preventDefault();
-        updateReminders(e, reminder);
+        updateReminders(reminder);
         dispatch(showModalReminder(false));
     }
 
@@ -31,9 +31,9 @@ export const ReminderContainer = ({ children }) => {
             city,
             idReminder
         } = reminder;
-
+        
+        const newDate = moment(`${year}-${month}-${day}`).format("YYYY-MM-DD");
         if (typeModalReminder === 'newReminder') {
-            const newDate = moment(`${year}-${month}-${day}`).format("YYYY-MM-DD");
             const newReminder = {
                 id: new Date().getTime(),
                 title: title,
@@ -43,8 +43,8 @@ export const ReminderContainer = ({ children }) => {
             }
             dispatch(setNewReminder(newReminder));
         }
+        
         if (typeModalReminder === 'editReminder') {
-            const newDate = moment(`${year}-${month}-${day}`).format("YYYY-MM-DD");
             const newReminder = {
                 id: idReminder,
                 title: title,
@@ -59,7 +59,8 @@ export const ReminderContainer = ({ children }) => {
     return children({
         state: {
             showModal,
-            currentReminder
+            currentReminder,
+            typeModalReminder
         },
         events: {
             onClose,

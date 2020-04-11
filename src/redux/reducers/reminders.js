@@ -7,8 +7,9 @@ const defaultState = {
     currentReminder: {
         id: '',
         title: '',
-        date: {},
-        hour: '',
+        date: '',
+        hour: 0,
+        minutes: 0,
         city: ''
     },
     remindersData: [
@@ -16,7 +17,8 @@ const defaultState = {
             id: '',
             title: '',
             date: {},
-            hour: '',
+            hour: 0,
+            minutes: 0,
             city: ''
         }
     ]

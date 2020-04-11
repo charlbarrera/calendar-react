@@ -9,7 +9,7 @@ import { Grid } from '../contentCalendar/styles.js';
     })
   }
 
-  export const DatesMonth = ({firstDayOfMonth, daysInMonth, getCurrentDay, onDayClick, getRemindersDate}) => {
+  export const DatesMonth = ({firstDayOfMonth, daysInMonth, getCurrentDay, onAddReminder, getRemindersDate}) => {
     let blanks = [];
     for (let i = 0; i < firstDayOfMonth(); i++) {
       blanks.push(
@@ -22,7 +22,7 @@ import { Grid } from '../contentCalendar/styles.js';
         let currentDay = day == getCurrentDay() ? 'today' : '';
         const remindersDate = getRemindersDate(day);
         daysInMonthArr.push(
-        <DayStyles key={day} currentDay={currentDay} onClick={(e) => onDayClick(e, day)}>
+        <DayStyles key={day} currentDay={currentDay} onClick={(e) => onAddReminder(e, day)}>
             {day}
             <ReminderList remindersDate={remindersDate} />
         </DayStyles>

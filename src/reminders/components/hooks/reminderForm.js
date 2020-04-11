@@ -2,6 +2,7 @@ import React from 'react';
 
 export const useReminderForm = (currentReminder) => {
     const [idReminder, setIdReminder] = React.useState('');
+    const [errors, setErrors] = React.useState({});
     const [title, setTitle] = React.useState('');
     const [year, setYear] = React.useState(0);
     const [month, setMonth] = React.useState(1);
@@ -25,6 +26,13 @@ export const useReminderForm = (currentReminder) => {
         setTitle(title);
     }, [currentReminder]);
 
+    React.useEffect(() => {
+        console.log('title', title)
+        if (title.length > 30) {
+            setTitle((prevTitle) => prevTitle.slice(0, 30));
+        }
+    },[title])
+
 
     return {
         stateForm: {
@@ -38,9 +46,11 @@ export const useReminderForm = (currentReminder) => {
             idReminder,
         },
         eventsForm: {
+            setTitle,
             setYear,
             setDay,
             setHour,
+            setMonth,
             setMinutes,
             setCity
         }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { MonthsComponent } from '../months';
 import { YearsComponent } from '../years';
-import { DaysWeekStyles, DaysMonthStyles, Grid } from './styles';
+import { Grid } from './styles';
 import { DatesMonth } from '../daysMonth';
 
 export const ContentCalendar = ({ state, events, columns, weekdayshort }) => {
@@ -34,7 +34,7 @@ export const ContentCalendar = ({ state, events, columns, weekdayshort }) => {
                         firstDayOfMonth={events.firstDayOfMonth}
                         daysInMonth={events.daysInMonth}
                         getCurrentDay={events.getCurrentDay}
-                        onDayClick={events.onDayClick}
+                        onAddReminder={events.onAddReminder}
                         getRemindersDate={events.getRemindersDate}
                     />
             </>

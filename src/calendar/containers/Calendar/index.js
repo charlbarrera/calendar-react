@@ -1,148 +1,152 @@
 import { shallowEqual, useSelector, useDispatch } from 'react-redux';
 import moment from 'moment';
 import { setDateObject, setTypeContent, selectDay } from '../../../redux/actions/calendar';
-import { typeModalReminder, showModalReminder } from '../../../redux/actions/reminders';
+import { typeModalReminder, showModalReminder, setCurrentReminder } from '../../../redux/actions/reminders';
 
 
 
 export const CalendarContainer = ({ children }) => {
-const dateObject = useSelector(({ calendar }) => calendar.dateObject, shallowEqual);
-const typeContent = useSelector(({ calendar }) => calendar.typeContent, shallowEqual);
-const selectedDay = useSelector(({ calendar }) => calendar.selectedDay, shallowEqual);
-const allMonths = useSelector(({ calendar }) => calendar.allMonths, shallowEqual);
+  const dateObject = useSelector(({ calendar }) => calendar.dateObject, shallowEqual);
+  const typeContent = useSelector(({ calendar }) => calendar.typeContent, shallowEqual);
+  const selectedDay = useSelector(({ calendar }) => calendar.selectedDay, shallowEqual);
+  const allMonths = useSelector(({ calendar }) => calendar.allMonths, shallowEqual);
 
 
-const reminders = useSelector(({ reminders }) => reminders.remindersData, shallowEqual);
+  const reminders = useSelector(({ reminders }) => reminders.remindersData, shallowEqual);
 
 
-const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
 
-// days of the week
-const weekdayshort = moment.weekdaysShort();
-const columns = weekdayshort.length;
+  // days of the week
+  const weekdayshort = moment.weekdaysShort();
+  const columns = weekdayshort.length;
 
-// first weekday
-const firstDayOfMonth = () => {
+  // first weekday
+  const firstDayOfMonth = () => {
     let firstDay = moment(dateObject)
-                 .startOf("month")
-                 .format("d"); 
-   return firstDay;
-};
+      .startOf("month")
+      .format("d");
+    return firstDay;
+  };
 
-const daysInMonth = () => {
+  const daysInMonth = () => {
     return moment(dateObject).daysInMonth();
-};
+  };
 
-const getRemindersDate = (day) => {
-  const month = dateObject.month() + 1;
-  const year = dateObject.year();
-  const momentA = moment(`${year}-${month}-${day}`).format("YYYY-MM-DD");
-  const remindersDay = reminders.filter((reminder) => {
-    const { date } = reminder;
-    if (momentA === date) {
-      return reminder;
-    }
-  })
-
-  return sortByHour(remindersDay);
-}
-
-const sortByHour = (remindersDay) => {
-  return remindersDay.sort((reminderA, reminderB) => {
-    if (reminderA.hour < reminderB.hour) return -1;
-    if (reminderA.hour > reminderB.hour) return 1;
-    return 0;
-  })
-
-}
-
-const getCurrentDay = () => {  
-    const day = dateObject.day();
-    const month = dateObject.month();
+  const getRemindersDate = (day) => {
+    const month = dateObject.month() + 1;
     const year = dateObject.year();
+    const momentA = moment(`${year}-${month}-${day}`).format("YYYY-MM-DD");
+    const remindersDay = reminders.filter((reminder) => {
+      const { date } = reminder;
+      if (momentA === date) {
+        return reminder;
+      }
+    })
+
+    return sortByHour(remindersDay);
+  }
+
+  const sortByHour = (remindersDay) => {
+    return remindersDay.sort((reminderA, reminderB) => {
+      if (reminderA.hour < reminderB.hour) return -1;
+      if (reminderA.hour > reminderB.hour) return 1;
+      return 0;
+    })
+
+  }
+
+  const getCurrentDay = () => {
     return dateObject.format("D");
-};
+  };
 
-const month = () => {
-   return dateObject.format("MMMM");
-};
+  const month = () => {
+    return dateObject.format("MMMM");
+  };
 
-const onPrev = () => {
-  let newDateObject = Object.assign({}, dateObject);
-  let curr = typeContent === 'daysMonth' ? 'month' : typeContent;
-  newDateObject = moment(newDateObject).subtract(1, curr);
+  const onPrev = () => {
+    let newDateObject = Object.assign({}, dateObject);
+    let curr = typeContent === 'daysMonth' ? 'month' : typeContent;
+    newDateObject = moment(newDateObject).subtract(1, curr);
 
-  dispatch(setDateObject({dateObject: newDateObject}));
-}
+    dispatch(setDateObject({ dateObject: newDateObject }));
+  }
 
-const onNext = () => {
-  let newDateObject = Object.assign({}, dateObject);
-  let curr = typeContent === 'daysMonth' ? 'month' : typeContent;
-  newDateObject = moment(newDateObject).add(1, curr);
-  dispatch(setDateObject({dateObject: newDateObject}));
+  const onNext = () => {
+    let newDateObject = Object.assign({}, dateObject);
+    let curr = typeContent === 'daysMonth' ? 'month' : typeContent;
+    newDateObject = moment(newDateObject).add(1, curr);
+    dispatch(setDateObject({ dateObject: newDateObject }));
 
-}
+  }
 
-const year = () => {    
+  const year = () => {
     return dateObject.format("Y");
- };
+  };
 
-const setMonth = ({monthNo})  => {// get month number
+  const setMonth = ({ monthNo }) => {// get month number
     let newDateObject = Object.assign({}, dateObject);
     newDateObject = moment(newDateObject).set("month", monthNo); // change month value
 
-    dispatch(setDateObject({dateObject: newDateObject}));
+    dispatch(setDateObject({ dateObject: newDateObject }));
     dispatch(setTypeContent(typeContent !== 'month' ? 'month' : 'daysMonth'));
-};
+  };
 
-const setshowYearTable = () => {
+  const setshowYearTable = () => {
     dispatch(setTypeContent(typeContent !== 'year' ? 'year' : 'months'));
-}
+  }
 
-const setShowMonthTable = () => {
-   dispatch(setTypeContent(typeContent !== 'month' ? 'month' : 'daysMonth'));
-}
+  const setShowMonthTable = () => {
+    dispatch(setTypeContent(typeContent !== 'month' ? 'month' : 'daysMonth'));
+  }
 
-const setYear = year => {
+  const setYear = year => {
     // alert(year)
     let newDateObject = Object.assign({}, dateObject);
     newDateObject = moment(newDateObject).set("year", year);
-    dispatch(setDateObject({dateObject: newDateObject}));
+    dispatch(setDateObject({ dateObject: newDateObject }));
     dispatch(setTypeContent('month'));
   };
 
 
-const onDayClick = (e, day) => {
-  dispatch(selectDay(`${year()}-${month()}-${day}`));
-  dispatch(showModalReminder(true));
-  dispatch(typeModalReminder('newReminder'))
-}
+  const onAddReminder = (e, day) => {
+    dispatch(setCurrentReminder({
+      title: 'new reminder',
+      date: `${year()}-${month()}-${day}`,
+      hour: moment().hour(),
+      minutes: moment().minutes(),
+      city: ''
+    }));
+
+    dispatch(typeModalReminder('newReminder'));
+    dispatch(showModalReminder(true));
+  }
 
 
 
 
   return children({
     events: {
-        onDayClick,
-        setYear,
-        firstDayOfMonth,
-        setshowYearTable,
-        setShowMonthTable,
-        setMonth,
-        year,
-        onNext,
-        onPrev,
-        month,
-        getCurrentDay,
-        daysInMonth,
-        getRemindersDate
+      onAddReminder,
+      setYear,
+      firstDayOfMonth,
+      setshowYearTable,
+      setShowMonthTable,
+      setMonth,
+      year,
+      onNext,
+      onPrev,
+      month,
+      getCurrentDay,
+      daysInMonth,
+      getRemindersDate
     },
     state: {
-        allMonths,
-        selectedDay,
-        typeContent,
-        reminders
+      allMonths,
+      selectedDay,
+      typeContent,
+      reminders
     },
     columns,
     weekdayshort,
