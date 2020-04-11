@@ -1,40 +1,70 @@
+import React from 'react';
 import { useSelector, shallowEqual, useDispatch } from "react-redux";
-import { showReminder } from '../../redux/actions/calendar';
 import moment from "moment";
-import { setNewReminder } from "../../redux/actions/reminders";
+import { setNewReminder, showModalReminder, updateReminder } from "../../redux/actions/reminders";
 
 export const ReminderContainer = ({ children }) => {
-    const newReminder = useSelector(({ calendar }) => calendar.newReminder, shallowEqual);
-    const selectedDay = useSelector(({ calendar }) => calendar.selectedDay, shallowEqual);
-    const reminders = useSelector(({ reminders }) => reminders.remindersData, shallowEqual);
+    const showModal = useSelector(({ reminders }) => reminders.showModalReminder, shallowEqual);
+    const typeModalReminder = useSelector(({ reminders }) => reminders.typeModalReminder, shallowEqual);
+    const currentReminder = useSelector(({ reminders }) => reminders.currentReminder, shallowEqual);
     const dispatch = useDispatch();
 
+
     const onClose = (e) => {
-        dispatch(showReminder(false));
+        dispatch(showModalReminder(false));
     }
 
-    const onSubmit = (e) => {
+    const onSubmitReminder = (e, reminder) => {
         e.preventDefault();
-        const { yearDate, monthDate, dayDate, hour, minutes, title } = e.target;
-        const newDate = moment(`${yearDate.value}-${monthDate.value}-${dayDate.value}`).format("YYYY-MM-DD");
-        const newReminder = {
-            title: title.value,
-            date: newDate,
-            hour:  `${hour.value}:${minutes.value}`
-        }
+        updateReminders(e, reminder);
+        dispatch(showModalReminder(false));
+    }
 
-        dispatch(setNewReminder(newReminder));
-        dispatch(showReminder(false));
+    const updateReminders = (reminder) => {
+        const {
+            title,
+            day,
+            year,
+            month,
+            hour,
+            minutes,
+            city,
+            idReminder
+        } = reminder;
+
+        if (typeModalReminder === 'newReminder') {
+            const newDate = moment(`${year}-${month}-${day}`).format("YYYY-MM-DD");
+            const newReminder = {
+                id: new Date().getTime(),
+                title: title,
+                date: newDate,
+                hour: `${hour}:${minutes}`,
+                city: city
+            }
+            dispatch(setNewReminder(newReminder));
+        }
+        if (typeModalReminder === 'editReminder') {
+            const newDate = moment(`${year}-${month}-${day}`).format("YYYY-MM-DD");
+            const newReminder = {
+                id: idReminder,
+                title: title,
+                date: newDate,
+                hour: `${hour}:${minutes}`,
+                city: city
+            }
+            dispatch(updateReminder(newReminder));
+        }
     }
 
     return children({
         state: {
-            newReminder,
-            selectedDay
+            showModal,
+            currentReminder
         },
         events: {
             onClose,
-            onSubmit
+            onSubmitReminder
         }
+
     })
 }

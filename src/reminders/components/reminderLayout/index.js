@@ -2,42 +2,36 @@ import React from 'react';
 import { Input } from '@material-ui/core';
 import { ModalComponent } from '../modal';
 import { Button } from '@material-ui/core';
+import { useReminderForm } from '../hooks/reminderForm';
 
-export const ReminderLayout = ({ state, events }) => {
-    const { newReminder, selectedDay } = state;
-    const { onClose, onSubmit } = events;
-    const [date, setDate] = React.useState(selectedDay);
-    const [year, setYear] = React.useState(0);
-    const [month, setMonth] = React.useState(1);
-    const [day, setDay] = React.useState(1);
-    const [hour, setHour] = React.useState(5);
-    const [minutes, setMinutes] = React.useState(30);
-    React.useEffect(() => {
-        const selectedDateParsed = selectedDay.split('-');
-        setYear(selectedDateParsed[0]);
-        setMonth(selectedDateParsed[1]);
-        setDay(selectedDateParsed[2]);
-    }, [date, selectedDay]);
+export const ReminderLayout = ({ state, events, title }) => {
+    const { showModalReminder, currentReminder } = state;
+    const { onClose, onSubmitReminder } = events;
+
+    const { stateForm, eventsForm } = useReminderForm(currentReminder);
 
 
-    return <ModalComponent open={newReminder} onClose={onClose} >
-                <form onSubmit={onSubmit} >
+    return <ModalComponent open={showModalReminder} onClose={onClose} >
+                <form 
+                    onSubmit={ (e) =>  onSubmitReminder(e, { ...stateForm })} 
+                >
+                    <h3>{title}</h3>
                     <div>
-                        <label>Add a title</label>
-                        <Input name="title" color="primary" placeholder="please fill out with your name" />
+                        <label>title</label>
+                        <Input name="title" color="primary" value={stateForm.title} placeholder="please fill out with your name" />
                     </div>
                     <div>
                         <div>
-                            <Input name="dayDate" color="primary" value={year} onChange={(e) => setYear(e.target.value)} />
-                            <Input name="monthDate" color="primary" value={month} onChange={(e) => setMonth(e.target.value)} />
-                            <Input name="yearDate" color="primary" value={day} onChange={(e) => setDay(e.target.value)} />
+                            <Input name="dayDate" color="primary" value={stateForm.year} onChange={(e) => eventsForm.setYear(e.target.value)} />
+                            <Input name="monthDate" color="primary" value={stateForm.month} onChange={(e) => eventsForm.setMonth(e.target.value)} />
+                            <Input name="yearDate" color="primary" value={stateForm.day} onChange={(e) => eventsForm.setDay(e.target.value)} />
                         </div>
                         <div>
-                            <Input name="hour" color="primary" value={hour} onChange={(e) => setHour(e.target.value)} />:<Input name="minutes" value={minutes} onChange={(e) => setMinutes(e.target.value)} />
+                            <Input name="hour" color="primary" value={stateForm.hour} onChange={(e) => eventsForm.setHour(e.target.value)} />:<Input name="minutes" value={stateForm.minutes} onChange={(e) => eventsForm.setMinutes(e.target.value)} />
                         </div>
                     </div>
                     <div>
-                        <Input name="city" color="primary" placeholder="city" />
+                        <Input name="city" color="primary" value={stateForm.city} onChange={(e) => eventsForm.setCity(e.target.value)} placeholder="city" />
                     </div>
                     <Button type="button" onClick={onClose}>cancel</Button>
                     <Button type="onsubmit" style={{backgroundColor: "#00838f"}} variant="contained" color="primary">NEW REMINDER</Button>

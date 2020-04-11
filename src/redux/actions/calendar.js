@@ -39,11 +39,3 @@ export const setAllMonths = ({allMonths}) => ({
     allMonths
 })
 
-
-/**
- * @param {Boolean} newReminder 
- */
-export const showReminder = (newReminder) => ({
-    type: NEW_REMINDER,
-    newReminder
-})

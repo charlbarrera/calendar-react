@@ -6,8 +6,7 @@ const defaultState = {
     dateObject: moment(),
     allMonths: moment.months(),
     selectedDay: '',
-    typeContent: 'daysMonth',
-    newReminder: false,
+    typeContent: 'daysMonth'
 }
 
 export default function calendarReducer(state = defaultState, action) {
@@ -24,9 +23,6 @@ export default function calendarReducer(state = defaultState, action) {
         case SET_ALL_MONTHS:
             const { allMonths } = action;
             return { ...state, allMonths };
-        case NEW_REMINDER:
-            const { newReminder } = action;
-            return { ...state, newReminder };
         default:
             return state;
     }

@@ -1,6 +1,7 @@
 import { shallowEqual, useSelector, useDispatch } from 'react-redux';
 import moment from 'moment';
-import { setDateObject, setTypeContent, selectDay, showReminder } from '../../../redux/actions/calendar';
+import { setDateObject, setTypeContent, selectDay } from '../../../redux/actions/calendar';
+import { typeModalReminder, showModalReminder } from '../../../redux/actions/reminders';
 
 
 
@@ -114,7 +115,8 @@ const setYear = year => {
 
 const onDayClick = (e, day) => {
   dispatch(selectDay(`${year()}-${month()}-${day}`));
-  dispatch(showReminder(true));
+  dispatch(showModalReminder(true));
+  dispatch(typeModalReminder('newReminder'))
 }
 
 
