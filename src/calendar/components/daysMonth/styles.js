@@ -9,7 +9,11 @@ export const Cell = styled.div`
 
 export const DayStyles = styled.div`
     background-color: ${(props) => props.currentDay === 'today' ? '#00838f' : '#fff'};
+    font-family: 'Google Sans',Roboto,Arial,sans-serif;
+    color: #3c4043;
     display: grid;
+    margin: 3px;
+    border-radius: 10px;
     border: 1px solid #00838f;
     grid-template-rows: 25px;
 `;

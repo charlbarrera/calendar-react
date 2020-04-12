@@ -35,6 +35,7 @@ export const ContentCalendar = ({ state, events, columns, weekdayshort }) => {
                         daysInMonth={events.daysInMonth}
                         getCurrentDay={events.getCurrentDay}
                         onAddReminder={events.onAddReminder}
+                        onEditReminder={events.onEditReminder}
                         getRemindersDate={events.getRemindersDate}
                     />
             </>

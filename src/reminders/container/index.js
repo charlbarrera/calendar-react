@@ -1,7 +1,6 @@
-import React from 'react';
 import { useSelector, shallowEqual, useDispatch } from "react-redux";
 import moment from "moment";
-import { setNewReminder, showModalReminder, updateReminder } from "../../redux/actions/reminders";
+import { setNewReminder, showModalReminder, updateReminder, setCurrentReminder } from "../../redux/actions/reminders";
 
 export const ReminderContainer = ({ children }) => {
     const showModal = useSelector(({ reminders }) => reminders.showModalReminder, shallowEqual);
@@ -29,31 +28,31 @@ export const ReminderContainer = ({ children }) => {
             hour,
             minutes,
             city,
+            color,
             idReminder
         } = reminder;
         
         const newDate = moment(`${year}-${month}-${day}`).format("YYYY-MM-DD");
+        const newReminder = {
+            title,
+            date: newDate,
+            color,
+            hour: `${hour}:${minutes}`,
+            city
+        };
         if (typeModalReminder === 'newReminder') {
-            const newReminder = {
+            dispatch(setNewReminder({
+                ...newReminder,
                 id: new Date().getTime(),
-                title: title,
-                date: newDate,
-                hour: `${hour}:${minutes}`,
-                city: city
-            }
-            dispatch(setNewReminder(newReminder));
+            }));
         }
         
         if (typeModalReminder === 'editReminder') {
-            const newReminder = {
+            dispatch(updateReminder({
+                ...newReminder,
                 id: idReminder,
-                title: title,
-                date: newDate,
-                hour: `${hour}:${minutes}`,
-                city: city
-            }
-            dispatch(updateReminder(newReminder));
-        }
+            }));
+        }        
     }
 
     return children({

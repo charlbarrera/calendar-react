@@ -1,6 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import { Grid } from '../contentCalendar/styles';
+import { Title, SubTitle } from '../../../globalStyles';
 
 export const YearsComponent = (props) => {
 
@@ -50,16 +51,17 @@ export const YearsComponent = (props) => {
       });
       rows.push(cells);
       let yearlist = rows.map((d, i) => {
-        return <Grid key={d} columns={3} >{d}</Grid>;
+        return <SubTitle style={{cursor: 'pointer'}}>
+          <Grid key={d} columns={3} >{d}</Grid>;
+        </SubTitle>
+        
       });
   
       return (
         <table className="calendar-month">
-          <thead>
-            <tr>
-              <th colSpan="4">Select a Year</th>
-            </tr>
-          </thead>
+          <div>
+              <Title colSpan="4">Select a Year</Title>
+          </div>
           <div>{yearlist}</div>
         </table>
       );

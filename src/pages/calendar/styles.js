@@ -6,7 +6,7 @@ export const CalendarStyles = styled.div`
     width: 950px;
     background-color: #fff;
     border: 1px solid #00838f;
-    height: 100%;
+    min-height: 600px;
 `;
 
 

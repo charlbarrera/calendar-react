@@ -27,6 +27,7 @@ export const CalendarContainer = ({ children }) => {
     let firstDay = moment(dateObject)
       .startOf("month")
       .format("d");
+    console.log('first day', firstDay);
     return firstDay;
   };
 
@@ -123,12 +124,19 @@ export const CalendarContainer = ({ children }) => {
     dispatch(showModalReminder(true));
   }
 
+  const onEditReminder = (reminder) => {
+    dispatch(setCurrentReminder(reminder));
+    dispatch(typeModalReminder('editReminder'));
+    dispatch(showModalReminder(true));
+  }
+
 
 
 
   return children({
     events: {
       onAddReminder,
+      onEditReminder,
       setYear,
       firstDayOfMonth,
       setshowYearTable,

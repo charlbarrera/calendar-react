@@ -1,5 +1,7 @@
 import React from 'react';
 import { Grid } from '../contentCalendar/styles';
+import { MonthStyles } from './styles';
+import { Title, SubTitle } from '../../../globalStyles';
 
 export const MonthsComponent = (props) => {
 
@@ -39,19 +41,21 @@ export const MonthsComponent = (props) => {
     rows.push(cells); 
     
     let monthlist = rows.map((d, i) => {
-        return <Grid key={d} columns={3} >{d}</Grid>;
+        return <SubTitle style={{cursor: 'pointer'}}>
+                  <Grid key={d} columns={3} >
+                      {d}
+                  </Grid>
+              </SubTitle>;
     });
     
 
 
      return (
-        <table className="calendar-month">
-          <thead>
-            <tr>
-              <th colSpan="4">Select a Month</th>
-            </tr>
-          </thead>
+        <MonthStyles className="calendar-month">
+          <div>
+            <Title>Select a Month</Title>
+          </div>
           <div >{monthlist}</div>
-        </table>
+        </MonthStyles>
       );
 }

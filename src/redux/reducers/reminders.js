@@ -42,13 +42,14 @@ export const remindersReducer = (state = defaultState, action) => {
             return { ...state, typeModalReminder };
 
         case UPDATE_REMINDER:
-            const { reminder: id } = action;
+            const newReminder = action.reminder;
+            const { id } = newReminder;
             const reminders = [...state.remindersData];
             const reminderIndex = reminders.findIndex((reminder) => reminder.id === id);
-            const remindersDataUpdated = reminders.splice(reminderIndex, 1, reminder);
+            reminders.splice(reminderIndex, 1, newReminder);
             return {
                 ...state,
-                remindersData: remindersDataUpdated
+                remindersData: reminders
             }
         case SET_CURRENT_REMINDER:
             const { currentReminder } = action;
