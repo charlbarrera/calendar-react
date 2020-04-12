@@ -19,19 +19,20 @@ export const DatesMonth = ({ firstDayOfMonth, daysInMonth, getCurrentDay, onAddR
     let currentDay = day == getCurrentDay() ? 'today' : '';
     const remindersDate = getRemindersDate(day);
     daysInMonthArr.push(
-      <DayStyles key={`day-${day}`} currentDay={currentDay} >
-        <div style={{cursor: 'pointer'}} onClick={(e) => onAddReminder(e, day)}>
-          {day}
-        </div>
-        <ReminderList remindersDate={remindersDate} onEditReminder={onEditReminder} />
-      </DayStyles>
+        <DayStyles key={`day-${day}`} currentDay={currentDay} >
+          <div style={{ cursor: 'pointer' }} onClick={(e) => onAddReminder(e, day)}>
+            {day}
+          </div>
+          <ReminderList remindersDate={remindersDate} onEditReminder={onEditReminder} />
+
+        </DayStyles>
     );
   }
 
   const total = [...blanks, ...daysInMonthArr];
   const rows = [];
   let cells = [];
-  
+
   total.forEach((row, i) => {
     if (i % 7 !== 0) {
       cells.push(row); // if index not equal 7 that means not go to next week
@@ -44,7 +45,7 @@ export const DatesMonth = ({ firstDayOfMonth, daysInMonth, getCurrentDay, onAddR
       rows.push(cells);
     }
   });
-  
+
   return rows.map((d, i) => {
     return <Grid key={`week-${i}`} columns={7} >{d}</Grid>;
   });

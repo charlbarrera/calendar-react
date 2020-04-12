@@ -6,6 +6,7 @@ import { useReminderForm } from '../hooks/useReminderForm';
 import ControlledOpenSelect from '../select';
 import { Title } from '../../../globalStyles';
 import { FormGroup, TextArea, Date, Time, City, ButtonsGroup } from './style';
+import { CityWeather } from '../cityWeather';
 
 const options = [
     { title: 'Teal', color: '#009688' },
@@ -16,18 +17,10 @@ const options = [
     { title: ' Pink', color: '#FF4081' },
 ];
 
-const CityWeather = ({ cityWeather, error }) => {
-    if (!cityWeather) return null;
-    if (error && error.weather) {
-        return <div>{error.weather}</div>
-    }
-    return <div>{cityWeather.weather.main}</div>
-}
 
 export const ReminderLayout = ({ state, events }) => {
     const { stateForm, eventsForm } = useReminderForm(state, events);
 
-    console.log('errors form', stateForm.errorsForm);
     return <ModalComponent borderColor={stateForm.color} open={stateForm.showModal} onClose={eventsForm.onClose} >
         <form
             onSubmit={eventsForm.onSubmit}
@@ -48,10 +41,11 @@ export const ReminderLayout = ({ state, events }) => {
                         fullWidth
                         name="title"
                         color="primary"
-                        value={stateForm.title}
+                        value={stateForm.titleReminder}
                         onChange={(e) => eventsForm.setTitle(e.target.value)}
                     />
                     <p style={{ fontSize: 11 }}>(max 30 characters)</p>
+                   { stateForm.errorsForm.titleReminder && <p style={{ fontSize:11, color: '#D32F2F'}}>{stateForm.errorsForm.titleReminder}</p>}
                 </TextArea>
 
                 <Date>

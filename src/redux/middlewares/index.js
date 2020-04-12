@@ -13,10 +13,8 @@ function * cityWeather ({ payload }) {
     const weatherService = new WeatherService();
     const { city, date } = payload;
     const response = yield call(weatherService.getWeatherByCity, city);
-    console.log('response', response);
     const cod = response.cod;
-    console.log()
-    if ( cod > 300) {
+    if ( cod > 300 && cod < 500) {
       yield put(setErrorReminderAsync({ type: 'weather', message: response.message }));  
     }
     if (response.cod == 200) {
@@ -25,8 +23,6 @@ function * cityWeather ({ payload }) {
       const dayReminder = moment(date).day();
      
       const dayReminderWeather = list[dayReminder - today].weather[0];
-    
-      console.log('dayReminderWeather', dayReminderWeather);
 
       yield put(setCityWeatherAsync({
           ...payload,

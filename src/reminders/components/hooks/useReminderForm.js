@@ -3,13 +3,12 @@ import React from 'react';
 export const useReminderForm = (state, events) => {
     const { showModal, currentReminder, typeModalReminder, currentCityWeather, errors } = state;
     const { onClose, onSubmitReminder, searchCityWeather } = events;
-
     const [idReminder, setIdReminder] = React.useState('');
-    const [errorsForm, setErrorsForm] = React.useState(null);
+    const [errorsForm, setErrorsForm] = React.useState({});
     const [color, setColor] = React.useState('');
     const [titleReminder, setTitle] = React.useState('');
     const [year, setYear] = React.useState(0);
-    const [month, setMonth] = React.useState(1);
+    const [month, setMonth] = React.useState('');
     const [day, setDay] = React.useState(1);
     const [hour, setHour] = React.useState(5);
     const [minutes, setMinutes] = React.useState(30);
@@ -26,38 +25,45 @@ export const useReminderForm = (state, events) => {
     React.useEffect(() => {
         const { id, title, date, minutes, hour, color, city } = currentReminder;
         const dateParsed = date.split('-');
-        setYear(dateParsed[0]);
+        setYear(+dateParsed[0]);
         setMonth(dateParsed[1]);
-        setDay(dateParsed[2]);
+        setDay(+dateParsed[2]);
         setHour(hour);
         setMinutes(minutes);
         setCity(city);
         setIdReminder(id);
         setTitle(title);
         setColor(color);
-        setCityWeather(currentCityWeather);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [currentCityWeather, currentReminder]);
+    }, [currentReminder]);
+
+    React.useEffect(() => {
+        setCityWeather(currentCityWeather);
+    },[currentCityWeather])
 
     React.useEffect(() => {
         setErrorsForm(errors);
-        
     },[errors]);
 
     React.useEffect(() => {
-        if (title.length > 30) {
+        if (titleReminder.length > 30) {
             setTitle((prevTitle) => prevTitle.slice(0, 30));
         }
-    }, [title]);
+    }, [titleReminder]);
 
     React.useEffect(() => {
-        console.log('city changed', city);
         if (city.length > 2) {
-
             searchCityWeather(city, `${year}-${month}-${day}`);
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     },[city]);
+
+    React.useEffect(() => {
+        if (city.length > 2) {
+            searchCityWeather(city, `${year}-${month}-${day}`);
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[year, month, day]);
 
 
 
@@ -67,9 +73,11 @@ export const useReminderForm = (state, events) => {
 
     const onSubmit = (e) => {
         e.preventDefault();
-        if (!errorsForm) {
+        if(!titleReminder) return setErrorsForm({...errorsForm, titleReminder: 'the reminder should have at least 1 character'});
+        const isEmptyErrors = Object.getOwnPropertyNames(errorsForm).length === 0;
+        if (isEmptyErrors) {
             const reminder = {
-                title,
+                title: titleReminder,
                 day,
                 year,
                 month,
@@ -109,6 +117,7 @@ export const useReminderForm = (state, events) => {
             setMonth,
             setMinutes,
             onChangeCity,
+            setErrorsForm,
             setColor,
             onSubmit,
             onClose

@@ -37,7 +37,7 @@ export const remindersReducer = (state = defaultState, action) => {
         case SET_NEW_REMINDER:
             const { reminder } = action;
             const remindersUpdated = state.remindersData.concat(reminder);
-            return { ...state, errors: null, remindersData: remindersUpdated }
+            return { ...state, errors: {}, remindersData: remindersUpdated }
 
         case SHOW_MODAL_REMINDER:
             const { showModalReminder } = action;
@@ -45,7 +45,7 @@ export const remindersReducer = (state = defaultState, action) => {
 
         case SET_TYPE_MODAL_REMINDER:
             const { typeModalReminder } = action;
-            return { ...state, errors: null, typeModalReminder };
+            return { ...state, errors: {}, typeModalReminder };
 
         case UPDATE_REMINDER:
             const newReminder = action.reminder;
@@ -55,7 +55,7 @@ export const remindersReducer = (state = defaultState, action) => {
             reminders.splice(reminderIndex, 1, newReminder);
             return {
                 ...state,
-                errors: null,
+                errors: {},
                 remindersData: reminders
             }
         case SET_CURRENT_REMINDER:
@@ -67,7 +67,7 @@ export const remindersReducer = (state = defaultState, action) => {
             const { payload } = action;
             return {
                 ...state,
-                errors: null,
+                errors: {},
                 currentCityWeather: payload
             };
 
