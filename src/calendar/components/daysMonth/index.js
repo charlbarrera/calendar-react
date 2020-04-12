@@ -10,7 +10,7 @@ export const DatesMonth = ({ firstDayOfMonth, daysInMonth, getCurrentDay, onAddR
   let blanks = [];
   for (let i = 0; i < firstDayOfMonth(); i++) {
     blanks.push(
-      <div className="calendar-day empty">{""}</div>
+      <div key={`blank-${i}`} className="calendar-day empty">{""}</div>
     );
   }
 
@@ -19,7 +19,7 @@ export const DatesMonth = ({ firstDayOfMonth, daysInMonth, getCurrentDay, onAddR
     let currentDay = day == getCurrentDay() ? 'today' : '';
     const remindersDate = getRemindersDate(day);
     daysInMonthArr.push(
-      <DayStyles key={day} currentDay={currentDay} >
+      <DayStyles key={`day-${day}`} currentDay={currentDay} >
         <div style={{cursor: 'pointer'}} onClick={(e) => onAddReminder(e, day)}>
           {day}
         </div>
@@ -46,6 +46,6 @@ export const DatesMonth = ({ firstDayOfMonth, daysInMonth, getCurrentDay, onAddR
   });
   
   return rows.map((d, i) => {
-    return <Grid columns={7} >{d}</Grid>;
+    return <Grid key={`week-${i}`} columns={7} >{d}</Grid>;
   });
 }

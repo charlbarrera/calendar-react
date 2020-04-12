@@ -26,7 +26,7 @@ export const YearsComponent = (props) => {
 
       twelveyears.map(data => {
         months.push(
-          <td
+          <div
             key={data}
             className="calendar-month"
             onClick={e => {
@@ -34,7 +34,7 @@ export const YearsComponent = (props) => {
             }}
           >
             <span>{data}</span>
-          </td>
+          </div>
         );
       });
       let rows = [];

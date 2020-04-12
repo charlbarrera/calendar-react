@@ -27,7 +27,6 @@ export const CalendarContainer = ({ children }) => {
     let firstDay = moment(dateObject)
       .startOf("month")
       .format("d");
-    console.log('first day', firstDay);
     return firstDay;
   };
 
@@ -113,7 +112,7 @@ export const CalendarContainer = ({ children }) => {
 
   const onAddReminder = (e, day) => {
     dispatch(setCurrentReminder({
-      title: 'new reminder',
+      title: '',
       date: `${year()}-${month()}-${day}`,
       hour: moment().hour(),
       minutes: moment().minutes(),

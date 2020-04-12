@@ -15,7 +15,6 @@ export const ReminderLabel = styled.div`
     background-color: ${({ color }) => color ? color : '#fff'};
     color: ${({ color }) => color ? '#fff' : null};
     border-radius: 5px;
-    cursor: pointer;
     display: grid;
     align-items: center;
     font-size: 11px;
@@ -27,5 +26,14 @@ export const ReminderLabel = styled.div`
 `;
 
 export const TextReminder = styled.div`
+    margin: auto;
+`;
+
+export const IconStyle = styled.div`
+    color: #fff;
+    border-radius: 50%;
+    background-color: #FFEB3B;
+    cursor: pointer;
+    width: 15px;
     margin: auto;
 `;

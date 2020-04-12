@@ -2,7 +2,7 @@ import React from 'react';
 import { Input, TextField } from '@material-ui/core';
 import { ModalComponent } from '../modal';
 import { Button } from '@material-ui/core';
-import { useReminderForm } from '../hooks/reminderForm';
+import { useReminderForm } from '../hooks/useReminderForm';
 import ControlledOpenSelect from '../select';
 import { Title } from '../../../globalStyles';
 import { FormGroup, TextArea, Date, Time, City, ButtonsGroup } from './style';
@@ -16,22 +16,24 @@ const options = [
     { title: ' Pink', color: '#FF4081' },
 ];
 
+const CityWeather = ({ cityWeather, error }) => {
+    if (!cityWeather) return null;
+    if (error && error.weather) {
+        return <div>{error.weather}</div>
+    }
+    return <div>{cityWeather.weather.main}</div>
+}
+
 export const ReminderLayout = ({ state, events }) => {
-    const { showModal, currentReminder, typeModalReminder } = state;
-    const { onClose, onSubmitReminder } = events;
+    const { stateForm, eventsForm } = useReminderForm(state, events);
 
-    const { stateForm, eventsForm } = useReminderForm(currentReminder);
-
-    const title = typeModalReminder === 'newReminder' ? 'New reminder' : 'Edit Reminder';
-    const buttonTitle = typeModalReminder === 'newReminder' ? 'create' : 'save';
-
-
-    return <ModalComponent borderColor={stateForm.color} open={showModal} onClose={onClose} >
+    console.log('errors form', stateForm.errorsForm);
+    return <ModalComponent borderColor={stateForm.color} open={stateForm.showModal} onClose={eventsForm.onClose} >
         <form
-            onSubmit={(e) => onSubmitReminder(e, { ...stateForm })}
+            onSubmit={eventsForm.onSubmit}
         >
             <FormGroup>
-                <Title>{title}</Title>
+                <Title>{stateForm.title}</Title>
                 <ControlledOpenSelect
                     title="color"
                     options={options}
@@ -62,11 +64,12 @@ export const ReminderLayout = ({ state, events }) => {
                 </Time>
 
                 <City>
-                    <Input name="city" color="primary" value={stateForm.city} onChange={(e) => eventsForm.setCity(e.target.value)} placeholder="city" />
+                    <Input name="city" color="primary" value={stateForm.city} onChange={(e) => eventsForm.onChangeCity(e.target.value)} placeholder="city" />
+                    <CityWeather error={stateForm.errorsForm} cityWeather={stateForm.cityWeather} />
                 </City>
                 <ButtonsGroup>
-                    <Button type="button" onClick={onClose}>cancel</Button>
-                    <Button type="onsubmit" style={{ backgroundColor: "#00838f" }} variant="contained" color="primary">{buttonTitle}</Button>
+                    <Button type="button" onClick={eventsForm.onClose}>cancel</Button>
+                    <Button type="onsubmit" style={{ backgroundColor: "#00838f" }} variant="contained" color="primary">{stateForm.buttonTitle}</Button>
                 </ButtonsGroup>
 
             </FormGroup>

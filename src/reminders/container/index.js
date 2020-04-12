@@ -1,20 +1,31 @@
+import React from 'react';
 import { useSelector, shallowEqual, useDispatch } from "react-redux";
 import moment from "moment";
-import { setNewReminder, showModalReminder, updateReminder, setCurrentReminder } from "../../redux/actions/reminders";
+import { setNewReminder, showModalReminder, updateReminder, setCurrentReminder, getCityWeather } from "../../redux/actions/reminders";
 
 export const ReminderContainer = ({ children }) => {
     const showModal = useSelector(({ reminders }) => reminders.showModalReminder, shallowEqual);
     const typeModalReminder = useSelector(({ reminders }) => reminders.typeModalReminder, shallowEqual);
     const currentReminder = useSelector(({ reminders }) => reminders.currentReminder, shallowEqual);
+    const currentCityWeather = useSelector(({ reminders }) => reminders.currentCityWeather, shallowEqual);
+    const errors = useSelector(({ reminders }) => reminders.errors, shallowEqual);
     const dispatch = useDispatch();
 
+
+    const searchCityWeather = (city, date) => {
+        dispatch(
+            getCityWeather({
+                city,
+                date
+            })
+        )
+    }
 
     const onClose = (e) => {
         dispatch(showModalReminder(false));
     }
 
-    const onSubmitReminder = (e, reminder) => {
-        e.preventDefault();
+    const onSubmitReminder = (reminder) => {
         updateReminders(reminder);
         dispatch(showModalReminder(false));
     }
@@ -31,13 +42,14 @@ export const ReminderContainer = ({ children }) => {
             color,
             idReminder
         } = reminder;
-        
+
         const newDate = moment(`${year}-${month}-${day}`).format("YYYY-MM-DD");
         const newReminder = {
             title,
             date: newDate,
             color,
-            hour: `${hour}:${minutes}`,
+            hour: `${hour}`,
+            minutes: `${minutes}`,
             city
         };
         if (typeModalReminder === 'newReminder') {
@@ -46,23 +58,26 @@ export const ReminderContainer = ({ children }) => {
                 id: new Date().getTime(),
             }));
         }
-        
+
         if (typeModalReminder === 'editReminder') {
             dispatch(updateReminder({
                 ...newReminder,
                 id: idReminder,
             }));
-        }        
+        }
     }
 
     return children({
         state: {
             showModal,
             currentReminder,
-            typeModalReminder
+            typeModalReminder,
+            currentCityWeather,
+            errors
         },
         events: {
             onClose,
+            searchCityWeather,
             onSubmitReminder
         }
 

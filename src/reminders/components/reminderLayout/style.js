@@ -28,6 +28,8 @@ export const Time = styled.div`
 
 export const City = styled.div`
     grid-area: city;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
 `;
 
 export const ButtonsGroup = styled.div`

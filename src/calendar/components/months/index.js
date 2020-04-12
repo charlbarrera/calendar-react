@@ -17,7 +17,7 @@ export const MonthsComponent = (props) => {
      
      props.data.map(data => {
       months.push(
-          <td
+          <div
           key={data}
           className="calendar-month"
           onClick={e => {
@@ -25,7 +25,7 @@ export const MonthsComponent = (props) => {
             }}
             >
           <span>{data}</span>
-        </td>
+        </div>
       );
     });
     
@@ -41,8 +41,8 @@ export const MonthsComponent = (props) => {
     rows.push(cells); 
     
     let monthlist = rows.map((d, i) => {
-        return <SubTitle style={{cursor: 'pointer'}}>
-                  <Grid key={d} columns={3} >
+        return <SubTitle key={d} style={{cursor: 'pointer'}}>
+                  <Grid columns={3} >
                       {d}
                   </Grid>
               </SubTitle>;

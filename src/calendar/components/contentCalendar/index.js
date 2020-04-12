@@ -26,7 +26,7 @@ export const ContentCalendar = ({ state, events, columns, weekdayshort }) => {
                     <Grid columns={7}>
                         {
                             weekdayshort.map((day) => (
-                                <div>{day}</div>
+                                <div key={day}>{day}</div>
                             ))
                         }
                     </Grid>
