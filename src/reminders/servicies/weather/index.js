@@ -5,7 +5,7 @@ export class WeatherService {
     async getWeatherByCity(city) {
         // default get 16 days
         const cnt = 16;
-        const url = `http://api.openweathermap.org/data/2.5/forecast/daily?q=${city}&cnt=${cnt}&appid=886705b4c1182eb1c69f28eb8c520e20`
+        const url = `https://api.openweathermap.org/data/2.5/forecast/daily?q=${city}&cnt=${cnt}&appid=886705b4c1182eb1c69f28eb8c520e20`
         const options = {}
         return await request(url, options);
     }
