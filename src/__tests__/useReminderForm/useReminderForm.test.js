@@ -20,71 +20,51 @@ const eventsMock = {
     onClose: () => { }
 }
 
-const { result } = renderHook(() => useReminderForm(stateMock, eventsMock));
+const eventMock = {
+    preventDefault: () => {}
+}
 
-act(() => {
-    result.current.eventsForm.setErrorsForm({})
-})
+test('testing ther form', () => {
+    const { result } = renderHook(() => useReminderForm(stateMock, eventsMock));
 
+    //values by props
+    expect(result.current.stateForm.titleReminder.length).toBeLessThanOrEqual(30);
+    expect(result.current.stateForm.year).toBe(2020);
+    expect(typeof result.current.stateForm.month).toBe('string');
+    expect(result.current.stateForm.day).toBe(1);
+    expect(result.current.stateForm.city).toBe('medellín');
 
-
-describe('testing the title of the reminder', () => {
-
-
-
-    test('It shouldnt admit more than 30 characters in title', () => {
-        expect(result.current.stateForm.titleReminder.length).toBeLessThanOrEqual(30);
-    });
-
-});
-
-describe('year month day', () => {
-    test('testing the types in date', () => {
-        expect(typeof result.current.stateForm.year === 'number').toBeTruthy();
-        expect(typeof result.current.stateForm.month === 'string').toBeTruthy();
-        expect(typeof result.current.stateForm.day === 'number').toBeTruthy();
-
-    });
-
-});
-
-describe('testing city', () => {
-    expect(result.current.stateForm.city.length).toBe(8);
-})
-
-describe('onSubmit without errors', () => {
-    const e = {
-        preventDefault: () => { },
-    };
+    //modifying values
     act(() => {
-        result.current.eventsForm.setErrorsForm({});
+        result.current.eventsForm.onChangeTitleReminder('roberto');
+        result.current.eventsForm.setYear(2200);
+        result.current.eventsForm.setDay(6);
+        result.current.eventsForm.onChangeCity('barcelona');
     })
 
-    test('sending form without errors', () => {
-        act(() => {
-            result.current.eventsForm.onSubmit(e);
-        });
+    // assert new state
+    expect(result.current.stateForm.titleReminder).toBe('roberto');
+    expect(result.current.stateForm.year).toBe(2200);
+    expect(result.current.stateForm.day).toBe(6);
+    expect(result.current.stateForm.city).toBe('barcelona');
 
-        expect(eventsMock.onSubmitReminder).toHaveBeenCalled();
-    })
-
-})
-
-
-describe('onSubmit with errors', () => {
-    const e = {
-        preventDefault: () => { },
-    };
+    // add an invalid title
     act(() => {
-        result.current.eventsForm.setErrorsForm({ titleReminder: 'the title should have at least one character'})
+        result.current.eventsForm.onChangeTitleReminder('');
+        result.current.eventsForm.setErrorsForm({ titleReminder: 'invalid title' });
     })
 
-    test('sending form without errors', () => {
-        act(() => {
-            result.current.eventsForm.onSubmit(e);
-        });
+    // testing the right change in error state
+    expect(result.current.stateForm.errorsForm.titleReminder).toBe('invalid title');
 
-        expect(eventsMock.onSubmitReminder).toHaveBeenCalled();
+    // try to send the form with invalid title
+    act(() => {
+        result.current.eventsForm.onSubmit(eventMock);
     })
+
+    // with invalid title, the submit won't be sent
+    expect(result.current.stateForm.errorsForm.titleReminder).toBe("the reminder should have at least 1 character");
+    expect(eventsMock.onSubmitReminder).not.toHaveBeenCalled();
 
 })
+
