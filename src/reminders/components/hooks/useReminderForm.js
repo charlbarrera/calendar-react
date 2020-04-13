@@ -82,7 +82,7 @@ export const useReminderForm = (state, events) => {
     
     const onSubmit = (e) => {
         e.preventDefault();
-        if (!titleReminder) return setErrorsForm({...errorsForm, titleReminder: 'the reminder should have at least 1 character'});
+        if (!titleReminder) return setErrorsForm({...errorsForm, titleReminder: 'the reminder should have at least 2 characters'});
 
         if (!errorsForm.titleReminder) {
             const reminder = {
