@@ -27,7 +27,7 @@ export const YearsComponent = (props) => {
       twelveyears.map(data => {
         months.push(
           <div
-            key={data}
+            key={`group-${data}`}
             className="calendar-month"
             onClick={e => {
               props.setYear(data);
@@ -51,18 +51,18 @@ export const YearsComponent = (props) => {
       });
       rows.push(cells);
       let yearlist = rows.map((d, i) => {
-        return <SubTitle style={{cursor: 'pointer'}}>
-          <Grid key={d} columns={3} >{d}</Grid>;
+        return <SubTitle key={`year-${d}-${i}`} style={{cursor: 'pointer'}}>
+          <Grid  columns={3} >{d}</Grid>
         </SubTitle>
         
       });
   
       return (
-        <table className="calendar-month">
+        <div className="calendar-month">
           <div>
               <Title colSpan="4">Select a Year</Title>
           </div>
           <div>{yearlist}</div>
-        </table>
+        </div>
       );
 }

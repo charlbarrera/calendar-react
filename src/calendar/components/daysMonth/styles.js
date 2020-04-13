@@ -8,12 +8,25 @@ export const Cell = styled.div`
 `;
 
 export const DayStyles = styled.div`
-    border: ${(props) => props.currentDay === 'today' ? '3px solid #00838f' : '1px solid #00838f'};
+    border: ${(props) => props.currentDay === 'today' ? '3px' : '1px'}  solid #00838f;
     font-family: 'Google Sans',Roboto,Arial,sans-serif;
-    color: #3c4043;
     display: grid;
     margin: 3px;
     border-radius: 10px;
-    border: 1px solid #00838f;
     grid-template-rows: 25px;
 `;
+
+export const AddReminderStyle = styled.div`
+    display: none;
+    position: absolute;
+    color: #4CAF50;
+    top: 0;
+    right: 3px;
+`;
+export const HeaderStyles = styled.div`
+    position: relative;
+    &:hover ${AddReminderStyle} {
+        display: block;
+    }
+`;
+

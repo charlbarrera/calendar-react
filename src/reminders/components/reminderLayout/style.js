@@ -7,7 +7,7 @@ export const FormGroup = styled.div`
                          'textArea textArea textArea textArea'
                          'date date . .'
                          'time time . .'
-                         'city city . .'
+                         'city city city .'
                          '. . buttonsGroup buttonsGroup';
 
 `;

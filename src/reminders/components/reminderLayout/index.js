@@ -35,14 +35,13 @@ export const ReminderLayout = ({ state, events }) => {
                 />
                 <TextArea>
                     <TextField
-                        multiline
                         label="Reminder"
                         variant="outlined"
                         fullWidth
                         name="title"
                         color="primary"
                         value={stateForm.titleReminder}
-                        onChange={(e) => eventsForm.setTitle(e.target.value)}
+                        onChange={(e) => eventsForm.onChangeTitleReminder(e.target.value)}
                     />
                     <p style={{ fontSize: 11 }}>(max 30 characters)</p>
                    { stateForm.errorsForm.titleReminder && <p style={{ fontSize:11, color: '#D32F2F'}}>{stateForm.errorsForm.titleReminder}</p>}
@@ -63,7 +62,7 @@ export const ReminderLayout = ({ state, events }) => {
                 </City>
                 <ButtonsGroup>
                     <Button type="button" onClick={eventsForm.onClose}>cancel</Button>
-                    <Button type="onsubmit" style={{ backgroundColor: "#00838f" }} variant="contained" color="primary">{stateForm.buttonTitle}</Button>
+                    <Button type="submit" style={{ backgroundColor: "#00838f" }} variant="contained" color="primary">{stateForm.buttonTitle}</Button>
                 </ButtonsGroup>
 
             </FormGroup>

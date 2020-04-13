@@ -5,7 +5,7 @@ import { WeatherIcon } from './style';
 export const CityWeather = ({ cityWeather, error }) => {
     if (!cityWeather) return null;
     if (error && error.weather) {
-        return <div>{error.weather}</div>
+        return <div style={{fontSize: 11, color:'#3c4043'}}>{error.weather}</div>
     }
 
     const { main } = cityWeather.weather;

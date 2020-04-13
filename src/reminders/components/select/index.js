@@ -48,7 +48,7 @@ export default function ControlledOpenSelect({ title, defaultColor, options, onC
           onChange={handleChange}
         >
           {
-              options.map((option) => <MenuItem style={{background: option.color, color: 'white'}} value={option.color}>{option.title}</MenuItem>)
+              options.map((option) => <MenuItem key={`color-${option.color}`} style={{background: option.color, color: 'white'}} value={option.color ? option.color : ''}>{option.title}</MenuItem>)
           }
         </Select>
       </FormControl>

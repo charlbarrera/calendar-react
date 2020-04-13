@@ -1,8 +1,8 @@
 import React from 'react';
-import { DayStyles, Cell } from './styles.js'
+import { DayStyles, Cell, HeaderStyles, AddReminderStyle } from './styles.js'
 import { Grid } from '../contentCalendar/styles.js';
 import { ReminderList } from '../reminderList/index.js';
-
+import { IoIosAddCircleOutline } from 'react-icons/io';
 
 
 
@@ -20,11 +20,13 @@ export const DatesMonth = ({ firstDayOfMonth, daysInMonth, getCurrentDay, onAddR
     const remindersDate = getRemindersDate(day);
     daysInMonthArr.push(
         <DayStyles key={`day-${day}`} currentDay={currentDay} >
-          <div style={{ cursor: 'pointer' }} onClick={(e) => onAddReminder(e, day)}>
+          <HeaderStyles style={{ cursor: 'pointer' }} onClick={(e) => onAddReminder(e, day)}>
             {day}
-          </div>
+            <AddReminderStyle>
+              <IoIosAddCircleOutline />
+            </AddReminderStyle>
+          </HeaderStyles>
           <ReminderList remindersDate={remindersDate} onEditReminder={onEditReminder} />
-
         </DayStyles>
     );
   }

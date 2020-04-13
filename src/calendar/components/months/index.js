@@ -41,7 +41,7 @@ export const MonthsComponent = (props) => {
     rows.push(cells); 
     
     let monthlist = rows.map((d, i) => {
-        return <SubTitle key={d} style={{cursor: 'pointer'}}>
+        return <SubTitle key={`month-${d}-${i}`} style={{cursor: 'pointer'}}>
                   <Grid columns={3} >
                       {d}
                   </Grid>

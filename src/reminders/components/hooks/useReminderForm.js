@@ -71,11 +71,20 @@ export const useReminderForm = (state, events) => {
         setCity(city);
     }
 
+    const onChangeTitleReminder = (newTitle) => {
+        if (titleReminder.length > 0) {
+            const errors = {...errorsForm};
+            delete errors.titleReminder;
+            setErrorsForm(errors);
+        }
+        setTitle(newTitle);
+    }
+    
     const onSubmit = (e) => {
         e.preventDefault();
-        if(!titleReminder) return setErrorsForm({...errorsForm, titleReminder: 'the reminder should have at least 1 character'});
-        const isEmptyErrors = Object.getOwnPropertyNames(errorsForm).length === 0;
-        if (isEmptyErrors) {
+        if (!titleReminder) return setErrorsForm({...errorsForm, titleReminder: 'the reminder should have at least 1 character'});
+
+        if (!errorsForm.titleReminder) {
             const reminder = {
                 title: titleReminder,
                 day,
@@ -110,7 +119,7 @@ export const useReminderForm = (state, events) => {
             errorsForm
         },
         eventsForm: {
-            setTitle,
+            onChangeTitleReminder,
             setYear,
             setDay,
             setHour,

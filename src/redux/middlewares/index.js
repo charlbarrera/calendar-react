@@ -19,15 +19,22 @@ function * cityWeather ({ payload }) {
     }
     if (response.cod == 200) {
       const { list } = response;
-      const today = moment().day();
-      const dayReminder = moment(date).day();
+      const today = moment().format('DD');
+      const currentMonth = moment().format('MM');
+      const monthReminder = moment(date).format('MM');
+      const dayReminder = moment(date).format('DD');
+      const difference = dayReminder - today;
+      if(dayReminder < today || difference > 16 || (currentMonth !== monthReminder)) {
+         yield put(setErrorReminderAsync({type: 'weather', message: 'Date must be between today and the next 16 days to display weather'}))
+      } else {
+        const dayReminderWeather = list[difference].weather[0];
+  
+        yield put(setCityWeatherAsync({
+            ...payload,
+            weather: dayReminderWeather
+        }));
+      }
      
-      const dayReminderWeather = list[dayReminder - today].weather[0];
-
-      yield put(setCityWeatherAsync({
-          ...payload,
-          weather: dayReminderWeather
-      }));
     }
   } catch (error) {
     console.log('error', error)
